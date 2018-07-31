@@ -2,13 +2,11 @@ package deb
 
 import (
 	"errors"
-	"time"
-
 	"fmt"
 	"os"
 	"path/filepath"
-
 	"strings"
+	"time"
 
 	"github.com/blakesmith/ar"
 	"github.com/demisto/gopack/files"
