@@ -2,16 +2,14 @@ package deb
 
 import (
 	"errors"
-	"time"
-
 	"fmt"
 	"os"
 	"path/filepath"
-
 	"strings"
+	"time"
 
 	"github.com/blakesmith/ar"
-	"github.com/dtylman/gopack/files"
+	"github.com/demisto/gopack/files"
 )
 
 const (

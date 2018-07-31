@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dtylman/gopack/deb"
-	"github.com/dtylman/gopack/rpm"
+	"github.com/demisto/gopack/deb"
+	"github.com/demisto/gopack/rpm"
 )
 
 func check(err error) {
@@ -46,8 +46,7 @@ func sampleDeb() error {
 	if err != nil {
 		return err
 	}
-	debFileName, err := d.Create("")
-	fmt.Println("Created " + debFileName)
+	_, err = d.Create("")
 	return err
 }
 
@@ -78,8 +77,7 @@ func sampleRpm() error {
 	if err != nil {
 		return err
 	}
-	rpmFileName, err := r.Create("")
-	fmt.Println("Created " + rpmFileName)
+	_, err = r.Create("")
 	return err
 }
 

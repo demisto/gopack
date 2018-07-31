@@ -1,21 +1,19 @@
 package deb
 
 import (
-	"github.com/meirwah/gopack/deb/tar"
+	"bytes"
 	"compress/gzip"
 	"crypto/md5"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
-	"time"
-
-	"bytes"
-
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/blakesmith/ar"
+	"github.com/demisto/gopack/deb/tar"
 )
 
 type canonical struct {

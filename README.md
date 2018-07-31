@@ -6,11 +6,11 @@ Easy create deb & rpm pacakges from `go`
 
 Usage:
 ```sh
-go get github.com/dtylman/gopack/deb
+go get github.com/demisto/gopack/deb
 ```
 And then: 
 ```go
-import	"github.com/dtylman/gopack/deb"
+import	"github.com/demisto/gopack/deb"
 ```
 
 ### Creating DEB:
