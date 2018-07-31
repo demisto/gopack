@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dtylman/gopack/files"
+	"github.com/demisto/gopack/files"
 )
 
 const (
