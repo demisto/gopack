@@ -96,16 +96,13 @@ func (r *Rpm) Create(folder string) (string, error) {
 	}
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
-	res,err := ioutil.ReadFile(specFile.Name())
-	fmt.Println(err)
-	fmt.Println(string(res))
 	cmd := exec.Command("rpmbuild", "-bb", specFile.Name())
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	cmd.Dir = r.workingFolder
 	err = cmd.Run()
 	if err != nil {
-		return "", fmt.Errorf("rpmbuild failed with: %v. Stdout: %v. Stderr: %v. specFileName: %v", err, stdout.String(), stderr.String(),specFile.Name())
+		return "", fmt.Errorf("rpmbuild failed with: %v. Stdout: %v. Stderr: %v. specFileName: %v", err, stdout.String(), stderr.String(), specFile.Name())
 	}
 	rpmFile := filepath.Join(rpmdir, r.Spec.Header[BuildArch], r.Spec.PackageName())
 	_, err = os.Stat(rpmFile)
