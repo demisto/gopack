@@ -2,6 +2,7 @@ package rpm
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -72,6 +73,24 @@ func (r *Rpm) Close() error {
 	// "/tmp/package-rpm-build20160419-10869-1byo5sr/SPECS/demistoserver.spec"], :level=>:info}
 
 */
+
+//rpm sometimes defines build root to %home/_topdir *BEFORE* reading the SPEC file. And fails if does not exists.
+//https://cmake.org/pipermail/cmake/2010-October/040039.html
+func (r *Rpm) rpmHasValidTopDir() error {
+	home := os.Getenv("HOME")
+	if home == "" {
+		return errors.New("HOME is not set")
+	}
+	homeInfo, err := os.Stat(home)
+	if err != nil {
+		return fmt.Errorf("%s does not exists", home)
+	}
+	if !homeInfo.IsDir() {
+		return fmt.Errorf("%s is not a folder", home)
+	}
+	return nil
+}
+
 func (r *Rpm) Create(folder string) (string, error) {
 	rpmdir, err := filepath.Abs(folder)
 	if err != nil {
@@ -97,9 +116,18 @@ func (r *Rpm) Create(folder string) (string, error) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	cmd := exec.Command("rpmbuild", "-bb", specFile.Name())
+
+	err = r.rpmHasValidTopDir()
+	if err != nil {
+		homeFolder := filepath.Join(r.workingFolder, "HOME")
+		err = os.MkdirAll(homeFolder, 0755)
+		if err != nil {
+			return "", err
+		}
+		cmd.Env = []string{"HOME=" + homeFolder}
+	}
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
-	cmd.Dir = r.workingFolder
 	err = cmd.Run()
 	if err != nil {
 		return "", fmt.Errorf("rpmbuild failed with: %v. Stdout: %v. Stderr: %v. specFileName: %v", err, stdout.String(), stderr.String(), specFile.Name())
